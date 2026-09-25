@@ -10,7 +10,7 @@ work. They feed into theme scoping and, in turn, into FG-TIDA's deliverables.
 
 | # | Title | Sector | Submitting organization | Primary theme | Submission |
 |---|-------|--------|-------------------------|---------------|------------|
-| — | *No submissions yet* | — | — | — | — |
+| [#14](https://github.com/FG-TIDA/use-cases/issues/14) | Agent-team delivery of regulated medical-device compliance work — authority, verification and evidence semantics in production | Health | SynomosAI (LGD theory initiative) / MedXpert (reference) | Continuous Trust and Attestation (with Delegation) | [Issue #14](https://github.com/FG-TIDA/use-cases/issues/14) |
 
 ## Contributing
 
