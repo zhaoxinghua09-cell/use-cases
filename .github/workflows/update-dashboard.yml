@@ -37,6 +37,7 @@ jobs:
           GITHUB_REPO: ${{ github.repository }}
         run: |
           python scripts/init_db.py
+          python scripts/load_reference_data.py
           python scripts/sync_github_issues.py
           python scripts/load_curation.py
           python scripts/generate_dashboard.py --out dashboard/index.html

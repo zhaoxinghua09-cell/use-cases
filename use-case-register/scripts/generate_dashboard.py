@@ -11,6 +11,7 @@ Usage: python scripts/generate_dashboard.py --out dashboard/index.html
 
 import argparse
 import html
+import os
 import sqlite3
 import sys
 from pathlib import Path
@@ -47,7 +48,7 @@ def fetch_use_cases(conn):
 
 def fetch_by_status(conn, status):
     return conn.execute(
-        """SELECT github_issue_number, title FROM use_cases
+        """SELECT github_issue_number, title, github_issue_url FROM use_cases
            WHERE review_status = ? ORDER BY github_issue_number""",
         (status,),
     ).fetchall()
@@ -55,7 +56,7 @@ def fetch_by_status(conn, status):
 
 def fetch_unmapped(conn):
     return conn.execute(
-        """SELECT uc.github_issue_number, uc.title FROM use_cases uc
+        """SELECT uc.github_issue_number, uc.title, uc.github_issue_url FROM use_cases uc
            WHERE uc.id NOT IN (SELECT use_case_id FROM use_case_theme_links)
              AND uc.id NOT IN (SELECT use_case_id FROM use_case_working_group_links)
            ORDER BY uc.github_issue_number"""
@@ -64,15 +65,15 @@ def fetch_unmapped(conn):
 
 def fetch_grouped(conn, group_table, group_name_col, group_id_col, link_table, link_col):
     rows = conn.execute(
-        f"""SELECT g.{group_name_col}, uc.github_issue_number, uc.title
+        f"""SELECT g.{group_name_col}, uc.github_issue_number, uc.title, uc.github_issue_url
             FROM {group_table} g
             JOIN {link_table} l ON l.{group_id_col} = g.id
             JOIN use_cases uc ON uc.id = l.{link_col}
             ORDER BY g.{group_name_col}, uc.github_issue_number"""
     ).fetchall()
     grouped = {}
-    for name, issue_number, title in rows:
-        grouped.setdefault(name, []).append((issue_number, title))
+    for name, issue_number, title, url in rows:
+        grouped.setdefault(name, []).append((issue_number, title, url))
     return grouped
 
 
@@ -120,9 +121,9 @@ def render_use_case_table(rows, columns=("Issue", "Title")):
     header = "".join(f"<th>{esc(c)}</th>" for c in columns)
     body_rows = []
     for row in rows:
-        issue_number, title = row[0], row[1]
-        rest = row[2:]
-        link_cell = f'<td><a href="https://github.com/FG-TIDA/use-cases/issues/{issue_number}">#{issue_number}</a></td>'
+        issue_number, title, url = row[0], row[1], row[2]
+        rest = row[3:]
+        link_cell = f'<td><a href="{esc(url)}">#{issue_number}</a></td>'
         rest_cells = "".join(f"<td>{esc(v)}</td>" for v in rest)
         body_rows.append(f"<tr>{link_cell}<td>{esc(title)}</td>{rest_cells}</tr>")
     return f"<table><tr>{header}</tr>{''.join(body_rows)}</table>"
@@ -147,8 +148,8 @@ def render_grouped(grouped):
     sections = []
     for name, use_cases in grouped.items():
         items = "".join(
-            f'<li><a href="https://github.com/FG-TIDA/use-cases/issues/{n}">#{n}</a> {esc(t)}</li>'
-            for n, t in use_cases
+            f'<li><a href="{esc(u)}">#{n}</a> {esc(t)}</li>'
+            for n, t, u in use_cases
         )
         sections.append(f"<h3>{esc(name)} ({len(use_cases)})</h3><ul>{items}</ul>")
     return "".join(sections)
@@ -192,6 +193,9 @@ def build_html(conn):
         f"<tr><td>{esc(term)}</td><td>{esc(definition)}</td></tr>" for term, definition in candidate_terms
     ) or '<tr><td colspan="2" class="empty">None.</td></tr>'
 
+    repo = os.environ.get("GITHUB_REPO", "fg-tida-wg0/use-cases")
+    new_issue_url = f"https://github.com/{repo}/issues/new/choose"
+
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -202,7 +206,7 @@ def build_html(conn):
 <body>
 <h1>FG-TIDA Use-Case Register</h1>
 <p class="subtitle">Read-only snapshot, rebuilt daily from GitHub Issues + reviewer curation.
-Submit a use case via <a href="https://github.com/FG-TIDA/use-cases/issues/new/choose">GitHub Issues</a>.</p>
+Submit a use case via <a href="{esc(new_issue_url)}">GitHub Issues</a>.</p>
 
 {render_cards(conn)}
 

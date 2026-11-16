@@ -88,7 +88,7 @@ def upsert(conn, issue):
 def main():
     load_env()
     token = os.environ.get("GITHUB_TOKEN")
-    repo = os.environ.get("GITHUB_REPO", "FG-TIDA/use-cases")
+    repo = os.environ.get("GITHUB_REPO", "fg-tida-wg0/use-cases")
     if not token:
         print("FATAL: GITHUB_TOKEN not set (see examples/.env.example)", file=sys.stderr)
         return 1

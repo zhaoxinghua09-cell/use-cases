@@ -21,11 +21,13 @@ through `review_use_case.py` (see `reviewer-workflow.md`).
 the "Run workflow" button on the Actions tab) and:
 
 1. Builds a fresh SQLite cache (`init_db.py`).
-2. Syncs raw issue data from GitHub (`sync_github_issues.py`).
-3. Applies committed reviewer curation from `curation/mappings.yaml`
+2. Loads the Working Group/theme roster from `curation/reference-data.yaml`
+   (`load_reference_data.py`).
+3. Syncs raw issue data from GitHub (`sync_github_issues.py`).
+4. Applies committed reviewer curation from `curation/mappings.yaml`
    (`load_curation.py`).
-4. Renders the static page (`generate_dashboard.py`).
-5. Publishes it to GitHub Pages.
+5. Renders the static page (`generate_dashboard.py`).
+6. Publishes it to GitHub Pages.
 
 The SQLite file itself is never committed — it's rebuilt from scratch every
 run, from GitHub (raw issues) and `curation/mappings.yaml` (reviewer

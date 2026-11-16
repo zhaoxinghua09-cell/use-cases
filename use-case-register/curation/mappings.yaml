@@ -1,4 +1,20 @@
-# Reviewer-curated tagging, keyed by GitHub issue number. Written by
-# scripts/review_use_case.py — see docs/reviewer-workflow.md. Read by
-# scripts/load_curation.py to rebuild the sqlite cache and dashboard.
-{}
+'35':
+  priority: null
+  related_use_cases: []
+  review_notes: 'Primary: WG1 (requirements in section 5 feed WG1 Deliverable 2 via
+    contribution 15/FG-TIDA-WG1-003). Secondary: WG2 (owns the start/enforcement decision
+    per the issue''s own text). working_groups is an unordered link table -- this
+    primary/secondary distinction isn''t representable in the schema yet and is recorded
+    here as a note instead.'
+  review_status: mapped
+  reviewed_at: '2026-11-16 14:50:40'
+  reviewer: Trisha Chakraborty
+  standards_gaps: []
+  summary: 'Seller checks attested agent build and spending authority before starting
+    paid work: WG1 owns what/how/when to attest, WG2 owns the start decision.'
+  taxonomy_terms: []
+  themes:
+  - Continuous Trust and Attestation
+  working_groups:
+  - wg1-cdra
+  - wg2-ibea

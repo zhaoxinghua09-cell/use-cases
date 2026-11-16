@@ -55,8 +55,8 @@ python scripts/review_use_case.py --issue 12 \
 `--add-theme` and `--add-taxonomy-term` create the row if it doesn't already
 exist — new themes/terms are expected to emerge from real use cases.
 `--add-wg` requires the working group to already exist in `working_groups`
-(add it to `schema/002_seed_reference_data.sql` when FG-TIDA forms a new
-one).
+(add it to `curation/reference-data.yaml` when FG-TIDA forms a new one, then
+run `scripts/load_reference_data.py`).
 
 ## After running the CLI
 

@@ -79,12 +79,26 @@ dashboard to update more than once a day, etc.) — not before.
 
 ## Reference data seeding
 
-`schema/002_seed_reference_data.sql` pre-populates `working_groups` with
-`wg1-ra-aai` and `themes` with the six themes already listed in the use-case
-issue template's "Theme relevance" section, so a reviewer has something to
-map against immediately. New themes/WGs beyond these are created on the fly
-by `review_use_case.py --add-theme "..."` — the taxonomy is meant to emerge,
-not be fixed upfront.
+`curation/reference-data.yaml` pre-populates `working_groups` with the
+chartered Working Groups and `themes` with the six themes already listed in
+the use-case issue template's "Theme relevance" section, so a reviewer has
+something to map against immediately. It is loaded by
+`scripts/load_reference_data.py`, run after `init_db.py`.
+
+This is deliberately kept out of `schema/*.sql`: the roster of Working
+Groups is living data that changes whenever FG-TIDA charters a new group,
+not a one-time structural migration. Keeping it in a plain YAML file next
+to `curation/mappings.yaml` means adding a Working Group is "edit a file and
+commit it," not "write a new numbered migration" — and avoids the seed data
+silently drifting out of sync the way a bundled migration file can once the
+schema itself evolves.
+
+New themes beyond the starter list are still created on the fly by
+`review_use_case.py --add-theme "..."` — the theme taxonomy is meant to
+emerge, not be fixed upfront. Working Group slugs are not auto-created the
+same way: `--add-wg` deliberately fails on an unknown slug, since a Working
+Group's existence is a governance fact, not free text a reviewer should be
+able to invent. Add it to `curation/reference-data.yaml` first.
 
 ## Deliberately not doing yet
 

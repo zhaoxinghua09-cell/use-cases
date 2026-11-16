@@ -1,0 +1,27 @@
+# The roster of chartered FG-TIDA Working Groups, and a starter theme
+# list. Living data, not structure: update this file directly and commit
+# it when a new Working Group charters or a theme needs adding up front
+# -- never by adding a numbered schema migration for it (see
+# docs/design.md, "Reference data").
+#
+# Loaded by scripts/load_reference_data.py.
+
+working_groups:
+  - slug: wg0-uct
+    name: Use Cases and Terminology
+  - slug: wg1-cdra
+    name: Continuous and Dynamic Remote Attestation for Agentic AI
+  - slug: wg2-ibea
+    name: Identity, Behaviour and Enforcement for AI Agents
+
+# Themes as enumerated in the use-case issue template's "Theme relevance"
+# section (.github/ISSUE_TEMPLATE/fg-tida-use-case-proposal.md). Seeded
+# only for convenience -- review_use_case.py --add-theme creates new ones
+# on the fly regardless, since the theme taxonomy is meant to emerge.
+themes:
+  - Dynamic Identity
+  - Continuous Trust and Attestation
+  - Delegation
+  - Discovery and Cross-Border Trust
+  - Runtime Enforcement (Control Plane)
+  - Embodied AI Identity and Trust
