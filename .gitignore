@@ -4,3 +4,10 @@
 
 # macOS
 .DS_Store
+
+# use-case-register: rebuildable local artifacts, not source of truth
+use-case-register/register.db
+use-case-register/dashboard/
+use-case-register/.env
+use-case-register/.venv/
+use-case-register/scripts/__pycache__/

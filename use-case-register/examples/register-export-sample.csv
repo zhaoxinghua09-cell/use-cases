@@ -1,0 +1,3 @@
+github_issue_number,title,github_issue_url,state,review_status,priority,reviewer,summary,themes,working_groups,taxonomy_terms,standards_gaps
+12,Cross-border payment mandate delegated to a banking agent,https://github.com/FG-TIDA/use-cases/issues/12,open,mapped,Must,alice,Cross-border delegation of a payment mandate with no standard revocation signal,Delegation; Discovery and Cross-Border Trust,wg1-ra-aai,mandate; revocation,No standard for cross-border mandate revocation propagation
+18,Home delivery agent granted temporary entry authority,https://github.com/FG-TIDA/use-cases/issues/18,open,needs_review,Should,,,,,,

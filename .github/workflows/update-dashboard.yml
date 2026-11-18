@@ -1,0 +1,52 @@
+name: Update use-case register dashboard
+
+on:
+  schedule:
+    - cron: "0 6 * * *"  # daily, 06:00 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r use-case-register/requirements.txt
+
+      - name: Build register and dashboard
+        working-directory: use-case-register
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPO: ${{ github.repository }}
+        run: |
+          python scripts/init_db.py
+          python scripts/load_reference_data.py
+          python scripts/sync_github_issues.py
+          python scripts/load_curation.py
+          python scripts/generate_dashboard.py --out dashboard/index.html
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: use-case-register/dashboard
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
